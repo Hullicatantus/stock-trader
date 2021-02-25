@@ -1,22 +1,25 @@
 package stockTrader;
 
+import stockTrader.FileLogger;
+import stockTrader.StockAPIService;
+
 import java.io.IOException;
 
 /**
  * Business logic for stock trading
  **/
-class Trader {
+public class Trader {
 	private StockAPIService stockAPIService;
-	private FileLogger logger;
+	private FileLogger fileLogger;
 
-	Trader(FileLogger logger, StockAPIService stockAPIService) {
+	Trader(FileLogger fileLogger, StockAPIService stockAPIService) {
 		this.stockAPIService = stockAPIService;
-		this.logger = logger;
+		this.fileLogger = fileLogger;
 	}
 
-	public void setStockAPIServiceAndLogger(FileLogger logger, StockAPIService stockAPIService) {
+	public void setStockAPIServiceAndLogger(FileLogger fileLogger, StockAPIService stockAPIService) {
 		this.stockAPIService = stockAPIService;
-		this.logger = logger;
+		this.fileLogger = fileLogger;
 	}
 
 
@@ -29,13 +32,12 @@ class Trader {
 		if (price <= bid) {
 			result = true;
 			stockAPIService.buy(symbol);
-			logger.log("Purchased " + symbol + " stock at $" + bid + ", since its higher that the current price ($" + price + ")");
+			fileLogger.log("Purchased " + symbol + " stock at $" + bid + ", since its higher that the current price ($" + price + ")");
 		}
 		else {
-			logger.log("Bid for " + symbol + " was $" + bid + " but the stock price is $" + price + ", no purchase was made.");
+			fileLogger.log("Bid for " + symbol + " was $" + bid + " but the stock price is $" + price + ", no purchase was made.");
 			result = false;
 		}
 		return result;
 	}
-
 }
